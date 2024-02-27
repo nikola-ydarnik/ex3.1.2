@@ -47,14 +47,13 @@ public class UsersController {
         return "user_edit";
     }
 
-    @PatchMapping({"/{id}"})
-    public String saveUpdateUser(@PathVariable("id") int id,
-                                 @ModelAttribute("user") @Valid User user,
+    @PatchMapping({"/update"})
+    public String saveUpdateUser(@ModelAttribute("user") @Valid User user,
                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user_edit";
         }
-        userService.updateUser(id, user);
+        userService.updateUser(user);
         return "redirect:/";
 
     }

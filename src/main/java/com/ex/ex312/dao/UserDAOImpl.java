@@ -2,6 +2,7 @@ package com.ex.ex312.dao;
 
 import com.ex.ex312.model.User;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -31,15 +32,16 @@ public class UserDAOImpl implements UserDAO{
     public User getUserById(int id) {
         return entityManager.find(User.class, id);
     }
-
+    // убрал id
     @Override
-    public void updateUser(int id, User user) {
-        user.setId(id);
+    public void updateUser(User user) {
         entityManager.merge(user);
     }
-
+    //Исправил на 1 запрос
     @Override
     public void deleteUser(int id) {
-        entityManager.remove(getUserById(id));
+        Query query = entityManager.createQuery("DELETE FROM User u WHERE u.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 }
